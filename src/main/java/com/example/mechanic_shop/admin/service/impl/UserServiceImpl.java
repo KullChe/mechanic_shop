@@ -3,12 +3,15 @@ package com.example.mechanic_shop.admin.service.impl;
 import com.example.mechanic_shop.admin.DTO.entity.User;
 import com.example.mechanic_shop.admin.DTO.model.GetUserResponseModel;
 import com.example.mechanic_shop.admin.DTO.model.requestbody.AddUserRequestBody;
+import com.example.mechanic_shop.admin.DTO.model.requestbody.UpdateUserRequestBody;
 import com.example.mechanic_shop.admin.DTO.model.responsebody.AddUserResponseBody;
 import com.example.mechanic_shop.admin.DTO.model.responsebody.GetUserResponseBody;
+import com.example.mechanic_shop.admin.DTO.model.responsebody.UpdateUserResponseBody;
 import com.example.mechanic_shop.admin.repository.UserRepo;
 import com.example.mechanic_shop.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
@@ -49,7 +52,9 @@ public class UserServiceImpl implements UserService {
         List<User> userList = userRepo.findAll();
         boolean isUserExist = userList.stream().anyMatch(u->u.getEmail().equals(requestBody.getEmail()));
         if(isUserExist){
-            throw new Exception("user is exist");
+            responseBody.setStatus("email is exits");
+            return responseBody;
+
         }
         User user = new User();
         user.setName(requestBody.getName());
@@ -58,6 +63,7 @@ public class UserServiceImpl implements UserService {
         user.setImageUrl(requestBody.getImageUrl());
         user.setStatus(requestBody.getStatus());
         Date present = new Date(System.currentTimeMillis());
+        user.setContactNumber(requestBody.getContactNumber());
         user.setCreatedDate(present);
 
         userRepo.save(user);
@@ -65,18 +71,32 @@ public class UserServiceImpl implements UserService {
         return responseBody;
     }
 
+    @Override
+    public UpdateUserResponseBody updateUser(UpdateUserRequestBody requestBody, Long id) {
+        UpdateUserResponseBody responseBody = new UpdateUserResponseBody();
+        User user = userRepo.findById(id).orElse(null);
+        if(user==null){
+            responseBody.setStatus("not found user");
+            return responseBody;
+        } else if (userRepo.existsByEmail(requestBody.getEmail()) && !user.getEmail().equals(requestBody.getEmail())) {
+            responseBody.setStatus("email is exits");
+            return responseBody;
+        } else if (user!=null) {
+            user.setName(requestBody.getName());
+            user.setEmail(requestBody.getEmail());
+            user.setRole(requestBody.getRole());
+            user.setImageUrl(requestBody.getImageUrl());
+            user.setStatus(requestBody.getStatus());
+            Date present = new Date(System.currentTimeMillis());
+            user.setUpdatedDate(present);
+            user.setContactNumber(requestBody.getContactNumber());
+            userRepo.save(user);
+            responseBody.setStatus("success");
+            return responseBody;
+        }
+        return responseBody;
 
-//    public User addNewUser(User user){
-//        return userRepo.save(user);
-//    }
-//    public User updateUser(User user){
-//        return userRepo.save(user);
-//    }
-//    public void deleteUser(Long id){
-//        userRepo.deleteUserById(id);
-//    }
-//    public User findUserById(Long id){
-//        return userRepo.findUserById(id)
-//                .orElseThrow(()-> new UserNotFoundException("user by id "+id+"was not found"));
-//    }
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.mechanic_shop.admin.DTO.model.responsebody;
+package com.example.mechanic_shop.admin.DTO.model.responsebody.user;
 
 import lombok.Data;
 

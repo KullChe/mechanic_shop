@@ -1,16 +1,14 @@
 package com.example.mechanic_shop.admin.api;
 
-import com.example.mechanic_shop.admin.DTO.entity.User;
-import com.example.mechanic_shop.admin.DTO.model.requestbody.AddUserRequestBody;
-import com.example.mechanic_shop.admin.DTO.model.requestbody.UpdateUserRequestBody;
-import com.example.mechanic_shop.admin.DTO.model.responsebody.AddUserResponseBody;
-import com.example.mechanic_shop.admin.DTO.model.responsebody.GetUserResponseBody;
-import com.example.mechanic_shop.admin.DTO.model.responsebody.UpdateUserResponseBody;
+import com.example.mechanic_shop.admin.DTO.model.requestbody.user.AddUserRequestBody;
+import com.example.mechanic_shop.admin.DTO.model.requestbody.user.UpdateUserRequestBody;
+import com.example.mechanic_shop.admin.DTO.model.responsebody.user.AddUserResponseBody;
+import com.example.mechanic_shop.admin.DTO.model.responsebody.user.DeleteUserResponseBody;
+import com.example.mechanic_shop.admin.DTO.model.responsebody.user.GetUserResponseBody;
+import com.example.mechanic_shop.admin.DTO.model.responsebody.user.UpdateUserResponseBody;
 import com.example.mechanic_shop.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/admin/api/user")
@@ -32,5 +30,9 @@ public class UserRestApi {
     @PutMapping("/update")
     public UpdateUserResponseBody updateUser(@RequestParam(value = "id") Long id, @RequestBody UpdateUserRequestBody requestBody){
         return userService.updateUser(requestBody,id);
+    }
+    @DeleteMapping("/delete")
+    public DeleteUserResponseBody deleteUser(@RequestParam(value = "id") Long id){
+        return userService.deleteUserById(id);
     }
 }

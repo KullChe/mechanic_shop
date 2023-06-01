@@ -2,16 +2,16 @@ package com.example.mechanic_shop.admin.service.impl;
 
 import com.example.mechanic_shop.admin.DTO.entity.User;
 import com.example.mechanic_shop.admin.DTO.model.GetUserResponseModel;
-import com.example.mechanic_shop.admin.DTO.model.requestbody.AddUserRequestBody;
-import com.example.mechanic_shop.admin.DTO.model.requestbody.UpdateUserRequestBody;
-import com.example.mechanic_shop.admin.DTO.model.responsebody.AddUserResponseBody;
-import com.example.mechanic_shop.admin.DTO.model.responsebody.GetUserResponseBody;
-import com.example.mechanic_shop.admin.DTO.model.responsebody.UpdateUserResponseBody;
+import com.example.mechanic_shop.admin.DTO.model.requestbody.user.AddUserRequestBody;
+import com.example.mechanic_shop.admin.DTO.model.requestbody.user.UpdateUserRequestBody;
+import com.example.mechanic_shop.admin.DTO.model.responsebody.user.AddUserResponseBody;
+import com.example.mechanic_shop.admin.DTO.model.responsebody.user.DeleteUserResponseBody;
+import com.example.mechanic_shop.admin.DTO.model.responsebody.user.GetUserResponseBody;
+import com.example.mechanic_shop.admin.DTO.model.responsebody.user.UpdateUserResponseBody;
 import com.example.mechanic_shop.admin.repository.UserRepo;
 import com.example.mechanic_shop.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
@@ -48,13 +48,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public AddUserResponseBody addNewUser(AddUserRequestBody requestBody) throws Exception {
         AddUserResponseBody responseBody =new AddUserResponseBody();
-
         List<User> userList = userRepo.findAll();
         boolean isUserExist = userList.stream().anyMatch(u->u.getEmail().equals(requestBody.getEmail()));
         if(isUserExist){
             responseBody.setStatus("email is exits");
             return responseBody;
-
         }
         User user = new User();
         user.setName(requestBody.getName());
@@ -65,7 +63,6 @@ public class UserServiceImpl implements UserService {
         Date present = new Date(System.currentTimeMillis());
         user.setContactNumber(requestBody.getContactNumber());
         user.setCreatedDate(present);
-
         userRepo.save(user);
         responseBody.setStatus("SUCCESS");
         return responseBody;
@@ -96,6 +93,20 @@ public class UserServiceImpl implements UserService {
         }
         return responseBody;
 
+    }
+
+    @Override
+    public DeleteUserResponseBody deleteUserById(Long id) {
+        User user = userRepo.findById(id).orElse(null);
+        DeleteUserResponseBody responseBody = new DeleteUserResponseBody();
+        if(user == null){
+            responseBody.setStatus("not found user");
+        }else{
+            userRepo.deleteById(id);
+            responseBody.setStatus("Delete User Success");
+            return responseBody;
+        }
+        return responseBody;
     }
 
 

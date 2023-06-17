@@ -23,10 +23,11 @@ public class UserRestApi {
     public GetUserResponseBody listUser(){
         return userService.getAllUser();
     }
-    @PostMapping("/add")
-    public AddUserResponseBody addNewUser(@RequestBody AddUserRequestBody requestBody) throws Exception {
-        return userService.addNewUser(requestBody);
-    }
+
+//    @PostMapping("/add")
+//    public AddUserResponseBody addNewUser(@RequestBody AddUserRequestBody requestBody) throws Exception {
+//        return userService.addNewUser(requestBody);
+//    }
     @PutMapping("/update")
     public UpdateUserResponseBody updateUser(@RequestParam(value = "id") Long id, @RequestBody UpdateUserRequestBody requestBody){
         return userService.updateUser(requestBody,id);

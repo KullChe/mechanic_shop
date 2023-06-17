@@ -10,7 +10,7 @@ import com.example.mechanic_shop.admin.DTO.model.responsebody.user.UpdateUserRes
 public interface UserService {
     GetUserResponseBody getAllUser();
 
-    AddUserResponseBody addNewUser(AddUserRequestBody requestBody) throws Exception;
+//    AddUserResponseBody addNewUser(AddUserRequestBody requestBody) throws Exception;
 
     UpdateUserResponseBody updateUser(UpdateUserRequestBody requestBody, Long id);
     DeleteUserResponseBody deleteUserById (Long id);

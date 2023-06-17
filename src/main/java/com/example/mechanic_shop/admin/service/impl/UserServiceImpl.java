@@ -45,28 +45,28 @@ public class UserServiceImpl implements UserService {
         return responseBody;
     }
 
-    @Override
-    public AddUserResponseBody addNewUser(AddUserRequestBody requestBody) throws Exception {
-        AddUserResponseBody responseBody =new AddUserResponseBody();
-        List<User> userList = userRepo.findAll();
-        boolean isUserExist = userList.stream().anyMatch(u->u.getEmail().equals(requestBody.getEmail()));
-        if(isUserExist){
-            responseBody.setStatus("email is exits");
-            return responseBody;
-        }
-        User user = new User();
-        user.setName(requestBody.getName());
-        user.setEmail(requestBody.getEmail());
-        user.setRole(requestBody.getRole());
-        user.setImageUrl(requestBody.getImageUrl());
-        user.setStatus(requestBody.getStatus());
-        Date present = new Date(System.currentTimeMillis());
-        user.setContactNumber(requestBody.getContactNumber());
-        user.setCreatedDate(present);
-        userRepo.save(user);
-        responseBody.setStatus("SUCCESS");
-        return responseBody;
-    }
+//    @Override
+//    public AddUserResponseBody addNewUser(AddUserRequestBody requestBody) throws Exception {
+//        AddUserResponseBody responseBody =new AddUserResponseBody();
+//        List<User> userList = userRepo.findAll();
+//        boolean isUserExist = userList.stream().anyMatch(u->u.getEmail().equals(requestBody.getEmail()));
+//        if(isUserExist){
+//            responseBody.setStatus("email is exits");
+//            return responseBody;
+//        }
+//        User user = new User();
+//        user.setName(requestBody.getName());
+//        user.setEmail(requestBody.getEmail());
+//        user.setRole(requestBody.getRole());
+//        user.setImageUrl(requestBody.getImageUrl());
+//        user.setStatus(requestBody.getStatus());
+//        Date present = new Date(System.currentTimeMillis());
+//        user.setContactNumber(requestBody.getContactNumber());
+//        user.setCreatedDate(present);
+//        userRepo.save(user);
+//        responseBody.setStatus("SUCCESS");
+//        return responseBody;
+//    }
 
     @Override
     public UpdateUserResponseBody updateUser(UpdateUserRequestBody requestBody, Long id) {

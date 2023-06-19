@@ -9,5 +9,5 @@ public class AddProductRequestBody {
     private String status;
     private String description;
     private String image;
-    private String category;
+    private String categoryId;
 }
